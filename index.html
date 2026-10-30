@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student FAQ | Electrical Engineering | UT San Antonio</title>
+  <meta name="description" content="Step-by-step answers, forms, and contacts for UT San Antonio Electrical Engineering graduate and undergraduate students.">
+  <link rel="stylesheet" href="assets/styles.css?v=2026-10-30-1639">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="utility-bar">
+    <nav class="wrap" aria-label="UT San Antonio">
+      <a href="https://www.utsa.edu" target="_blank" rel="noopener">UT San Antonio</a><span aria-hidden="true">/</span>
+      <a href="https://klesse.utsa.edu" target="_blank" rel="noopener">Klesse College of Engineering and Integrated Design</a><span aria-hidden="true">/</span>
+      <a href="https://klesse.utsa.edu/electrical/" target="_blank" rel="noopener">Electrical Engineering</a>
+    </nav>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#graduate" aria-label="Electrical Engineering Student FAQ home">
+        <img src="assets/ee-logo.png" alt="UT San Antonio Electrical Engineering, Klesse College of Engineering and Integrated Design" width="300" height="49">
+      </a>
+      <nav class="top-nav" aria-label="Main">
+        <a href="#graduate" data-nav="faq">FAQ</a>
+        <a href="#forms" data-nav="forms">Forms</a>
+        <a href="#contacts" data-nav="contacts">Contacts</a>
+        <a href="#signin" data-nav="editor" id="nav-signin" class="btn-signin" data-editor-only hidden>Sign in</a>
+        <a href="#ask" data-nav="ask" class="btn-solid">Ask a question</a>
+        <a class="btn-outline" href="forms/EE%20Student%20FAQ%20-%20Forms%20and%20Procedures.docx" download>Word version</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Student FAQ</p>
+      <h1>How can we help?</h1>
+      <p class="lede">Step-by-step answers for Electrical Engineering students: what to do, which form you need, who signs it, and where it goes.</p>
+      <form class="search" role="search" onsubmit="return false">
+        <label for="q" class="sr-only">Search questions and forms</label>
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="search-icon"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Search, e.g. program of study, CPT, qualifying exam, graduation" autocomplete="off">
+      </form>
+      <div class="quick" aria-label="Popular topics">
+        <span>Popular:</span>
+        <button type="button" data-search="Program of Study">Program of Study</button>
+        <button type="button" data-search="QE1">Qualifying Exam (QE1)</button>
+        <button type="button" data-search="graduation">Graduation</button>
+        <button type="button" data-search="CPT">CPT / RCL</button>
+        <button type="button" data-search="Independent Study">Independent Study</button>
+        <button type="button" data-search="travel">Travel</button>
+        <button type="button" data-search="GTA">GTA &amp; grader jobs</button>
+        <button type="button" data-search="scholarship">Scholarships</button>
+      </div>
+    </div>
+  </section>
+
+  <main id="main" class="wrap">
+    <div id="notice" class="notice" role="note"></div>
+
+    <!-- FAQ view -->
+    <section id="view-faq" class="view" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" class="sr-only">Frequently asked questions</h2>
+      <section class="most-asked" aria-labelledby="most-asked-h">
+        <div class="most-asked-head">
+          <h2 id="most-asked-h">Most asked questions</h2>
+          <span id="most-asked-note" class="muted small"></span>
+        </div>
+        <ol id="most-asked-list"></ol>
+      </section>
+      <div class="audience" role="tablist" aria-label="Choose who you are">
+        <button role="tab" id="tab-graduate" data-audience="graduate" aria-selected="true">Graduate students<small>MS &amp; PhD</small></button>
+        <button role="tab" id="tab-undergraduate" data-audience="undergraduate" aria-selected="false">Undergraduate students<small>BS-EE</small></button>
+        <button role="tab" id="tab-all" data-audience="all" aria-selected="false">All students<small>Graduation, travel &amp; wellness</small></button>
+      </div>
+
+      <div class="faq-layout">
+        <aside class="toc" aria-label="Sections">
+          <label for="toc-select" class="sr-only">Jump to section</label>
+          <select id="toc-select"></select>
+          <ol id="toc-list"></ol>
+          <button type="button" class="link-btn" id="expand-all">Expand all answers</button>
+        </aside>
+        <div id="faq-content" class="faq-content" role="tabpanel"></div>
+      </div>
+    </section>
+
+    <!-- Search results -->
+    <section id="view-search" class="view" hidden aria-labelledby="search-heading">
+      <div class="results-head">
+        <h2 id="search-heading">Search results</h2>
+        <button type="button" class="link-btn" id="clear-search">Clear search</button>
+      </div>
+      <p id="result-count" class="muted" aria-live="polite"></p>
+      <div id="results"></div>
+      <div class="ask-cta" id="search-ask">
+        <div><strong>Didn't find your answer?</strong> Send your question to the Program Coordinator.</div>
+        <a class="btn-solid" href="#ask" data-ask-from-search>Ask the coordinator</a>
+      </div>
+    </section>
+
+    <!-- Ask view -->
+    <section id="view-ask" class="view" hidden aria-labelledby="ask-heading">
+      <div class="view-head">
+        <h2 id="ask-heading">Ask the Program Coordinator</h2>
+        <p class="muted">Can't find what you need in the FAQ? Send your question and the Electrical Engineering Program Coordinator will reply to your UTSA email, usually within 2 business days.</p>
+      </div>
+      <div class="ask-layout">
+        <form id="ask-form" class="ask-form" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="ask-name">Your name <span aria-hidden="true">*</span></label>
+              <input id="ask-name" name="name" autocomplete="name" required maxlength="100">
+            </div>
+            <div class="field">
+              <label for="ask-email">UTSA email <span aria-hidden="true">*</span></label>
+              <input id="ask-email" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="firstname.lastname@my.utsa.edu">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="ask-type">I am a…</label>
+              <select id="ask-type" name="studentType">
+                <option value="">Select</option>
+                <option>Prospective / admitted student</option>
+                <option>MS student</option>
+                <option>PhD student</option>
+                <option>Undergraduate student</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ask-topic">Topic</label>
+              <select id="ask-topic" name="topic">
+                <option value="">Select</option>
+                <option>Admissions &amp; orientation</option>
+                <option>Registration &amp; courses</option>
+                <option>Program of Study / degree plan</option>
+                <option>Qualifying exam, proposal, or defense</option>
+                <option>Graduation</option>
+                <option>International student (I-20, RCL, CPT)</option>
+                <option>GTA, lab assistant, or grader job</option>
+                <option>Scholarships &amp; funding</option>
+                <option>Conference travel</option>
+                <option>Academic standing, incomplete, or reinstatement</option>
+                <option>Undergraduate certificates, REU, VIP, or BS/MS</option>
+                <option>Forms</option>
+                <option>Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="ask-question">Your question <span aria-hidden="true">*</span></label>
+            <textarea id="ask-question" name="question" rows="6" required minlength="10" maxlength="3000"></textarea>
+            <p class="hint">Please don't include your Social Security number or other sensitive information.</p>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="ask-website">Leave this empty</label>
+            <input id="ask-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <p id="ask-status" class="form-status" role="status" aria-live="polite"></p>
+          <button type="submit" class="btn-solid btn-lg" id="ask-submit">Send question</button>
+        </form>
+        <aside class="ask-side">
+          <h3>Before you send</h3>
+          <p>These might already answer it:</p>
+          <ul id="ask-suggestions"><li class="muted">Start typing your question to see related answers.</li></ul>
+          <h3>Urgent?</h3>
+          <p>Call 210-458-5664 or visit BSE 1.506.<br>For emergencies call University Police at 210-458-4911.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Forms view -->
+    <section id="view-forms" class="view" hidden aria-labelledby="forms-heading">
+      <div class="view-head">
+        <h2 id="forms-heading">Forms &amp; links</h2>
+        <p class="muted">Department forms download directly. UTSA forms open the official website, so you always get the newest version.</p>
+      </div>
+      <div class="filters">
+        <label for="form-filter" class="sr-only">Filter forms</label>
+        <input id="form-filter" type="search" placeholder="Filter forms…">
+        <div class="chips" role="group" aria-label="Show forms for">
+          <button type="button" class="chip is-on" data-form-aud="all">All</button>
+          <button type="button" class="chip" data-form-aud="graduate">Graduate</button>
+          <button type="button" class="chip" data-form-aud="undergraduate">Undergraduate</button>
+        </div>
+      </div>
+      <h3 class="group-title">Department forms <span class="muted">download</span></h3>
+      <div id="dept-forms" class="card-grid"></div>
+      <h3 class="group-title">Official UTSA forms &amp; pages <span class="muted">opens utsa.edu</span></h3>
+      <div id="ext-forms" class="card-grid"></div>
+    </section>
+
+    <!-- Editor view (staff only; stays hidden unless the site is served with the editor backend) -->
+    <section id="view-editor" class="view" hidden aria-labelledby="editor-heading"></section>
+
+    <!-- Contacts view -->
+    <section id="view-contacts" class="view" hidden aria-labelledby="contacts-heading">
+      <div class="view-head">
+        <h2 id="contacts-heading">Who to contact</h2>
+        <p class="muted">Not sure where to start? The Program Coordinator can point you in the right direction.</p>
+      </div>
+      <div id="contact-cards" class="card-grid contacts"></div>
+      <div id="wellness"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <img src="assets/ee-logo-reverse.png" alt="UT San Antonio Electrical Engineering" width="260" height="42">
+      <div>
+        <p><strong>Electrical Engineering</strong> · Klesse College of Engineering &amp; Integrated Design · The University of Texas at San Antonio</p>
+        <p>Program Coordinator: <strong>Belinda Guevara</strong> · BSE 1.506 · 210-458-5664 · <a href="mailto:Belinda.Guevara@utsa.edu">Belinda.Guevara@utsa.edu</a></p>
+        <p class="small">To improve this FAQ, the site counts which answers are opened and what is searched for. This is anonymous: no names or accounts are recorded. Information reflects the 2025–2026 academic year. Always confirm deadlines with the Program Coordinator or the official UTSA catalog. Links checked October 2026. <a href="mailto:Belinda.Guevara@utsa.edu?subject=Student%20FAQ%20website%20-%20correction">Report a broken link or error</a>.</p>
+        <p class="small"><a id="editor-link" href="#signin" data-editor-only hidden>Sign in</a></p>
+        <p class="small"><a href="forms/EE%20Student%20FAQ%20-%20Forms%20and%20Procedures.docx" download>Download the FAQ as a Word document</a> · <a href="#ask">Ask the Program Coordinator a question</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/config.js?v=2026-10-30-1639"></script>
+  <script src="assets/content.js?v=2026-10-30-1639"></script>
+  <script src="assets/app.js?v=2026-10-30-1639"></script>
+  <script src="assets/editor.js?v=2026-10-30-1639"></script>
+</body>
+</html>
