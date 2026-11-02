@@ -254,7 +254,7 @@
   const FACULTY = window.FACULTY;
   if (!FACULTY) { const link = $('[data-nav="faculty"]'); if (link) link.remove(); }
   const FAC_GROUPS = FACULTY ? [{ id: "core", title: "Faculty", people: FACULTY.faculty }].concat(FACULTY.groups) : [];
-  const personText = (p) => [p.name, p.title || "", (p.titles || []).join(" "), p.office || "", p.email || "", p.degree || "", (p.research || []).join(" ")].join(" ");
+  const personText = (p) => [p.name, p.title || "", (p.titles || []).join(" "), p.office || "", p.email || "", p.degree || "", p.focus ? p.focus.areas.join(" ") : ""].join(" ");
   const personMatches = (p, terms) => terms.every((t) => norm(personText(p)).includes(t));
   const allFacultyMatching = (terms) => FAC_GROUPS.flatMap((g) => g.people).filter((p) => personMatches(p, terms));
 
@@ -263,6 +263,14 @@
     return (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : "")).toUpperCase();
   }
   const externalLink = (url, label) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`;
+
+  const FOCUS_LABEL = { stated: "Research focus", publications: "Research focus, from publications", teaching: "Teaching focus" };
+  function focusHTML(f) {
+    if (!f) return `<div class="fac-focus"><div class="fac-focus-label">Research focus</div><div class="muted">Not listed publicly.</div></div>`;
+    return `<div class="fac-focus"><div class="fac-focus-label">${FOCUS_LABEL[f.basis]}</div>
+      <div>${f.areas.map(esc).join("; ")}</div>
+      <div class="fac-source">${f.note ? esc(f.note) + ". " : ""}Source: ${externalLink(f.source, f.label)}</div></div>`;
+  }
 
   function personCard(p) {
     if (p.titles === undefined) {   // courtesy, adjunct, and industrial lists give only a name and title
@@ -282,7 +290,7 @@
         ${place.length ? `<div>${place.join(" · ")}</div>` : ""}
       </div>
       ${p.degree ? `<div class="meta">${esc(p.degree)}</div>` : ""}
-      ${p.research.length ? `<div class="meta"><strong>Research:</strong> ${p.research.map(esc).join("; ")}</div>` : ""}
+      ${focusHTML(p.focus)}
       ${links.length ? `<div class="fac-links">${links.join("")}</div>` : ""}
     </article>`;
   }

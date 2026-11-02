@@ -402,3 +402,6 @@ body.ed-drawer-open { overflow: hidden; }
 .fac-areas li { margin: 4px 0; }
 #fac-source { margin-top: 12px; }
 #fac-results .group-title:first-child { margin-top: 12px; }
+.fac-focus { font-size: .88rem; line-height: 1.45; border-top: 1px solid var(--line); padding-top: 8px; }
+.fac-focus-label { font-size: .76rem; font-weight: 700; color: var(--orange-dark); margin-bottom: 2px; }
+.fac-source { font-size: .78rem; color: var(--muted); margin-top: 4px; }
