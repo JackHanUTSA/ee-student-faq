@@ -118,6 +118,10 @@
   }
   // following any link leaves search mode (the search text is kept for "Ask the coordinator")
   window.addEventListener("hashchange", () => { if (searchActive()) input.value = ""; route(); });
+  // the logos and FAQ link still go home when the address already says #graduate, which fires no hashchange
+  $$('a[href="#graduate"]').forEach((a) => a.addEventListener("click", () => {
+    if (location.hash === "#graduate") { input.value = ""; route(); }
+  }));
 
   // ---------- search ----------
   const input = $("#q");
