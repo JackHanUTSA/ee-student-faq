@@ -133,22 +133,12 @@ window.FAQ = {
          "items": [
           "Most funding comes from <strong>Graduate Teaching Assistant (GTA)</strong> positions, <strong>Graduate Research Assistant (GRA)</strong> positions, or stipends. It is based on faculty funding and faculty nominations.",
           "If you were awarded funding, you will receive a <strong>funding letter</strong> from the department.",
-          "If you did not get a letter, <strong>email faculty directly</strong> about openings in their labs. The <a href=\"https://klesse.utsa.edu/electrical/\" target=\"_blank\" rel=\"noopener\">faculty directory</a> is on the EE website.",
+          "If you did not get a letter, <strong>email faculty directly</strong> about openings in their labs. The <a href=\"#faculty\">faculty directory</a> is on the EE website.",
           "If a professor promised you support but no letter has arrived, ask the professor to send the support details to the Program Coordinator."
-         ]
-        },
-        {
-         "type": "forms",
-         "links": [
-          {
-           "label": "EE faculty directory",
-           "href": "https://klesse.utsa.edu/electrical/",
-           "external": true
-          }
          ]
         }
        ],
-       "text": "Most funding comes from Graduate Teaching Assistant (GTA) positions, Graduate Research Assistant (GRA) positions, or stipends. It is based on faculty funding and faculty nominations. If you were awarded funding, you will receive a funding letter from the department. If you did not get a letter, email faculty directly about openings in their labs. The faculty directory is on the EE website. If a professor promised you support but no letter has arrived, ask the professor to send the support details to the Program Coordinator. EE faculty directory"
+       "text": "Most funding comes from Graduate Teaching Assistant (GTA) positions, Graduate Research Assistant (GRA) positions, or stipends. It is based on faculty funding and faculty nominations. If you were awarded funding, you will receive a funding letter from the department. If you did not get a letter, email faculty directly about openings in their labs. The faculty directory is on the EE website. If a professor promised you support but no letter has arrived, ask the professor to send the support details to the Program Coordinator."
       },
       {
        "id": "1-i-m-moving-to-san-antonio-what-should-i-know-about-housing",
@@ -2014,15 +2004,6 @@ window.FORMS = {
    ],
    "who": "PhD committee (DocuSign)",
    "submit": "Routed by coordinator"
-  },
-  {
-   "label": "EE faculty directory",
-   "href": "https://klesse.utsa.edu/electrical/",
-   "audiences": [
-    "graduate"
-   ],
-   "who": "",
-   "submit": ""
   },
   {
    "label": "EE undergraduate catalog",

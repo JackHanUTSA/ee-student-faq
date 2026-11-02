@@ -245,7 +245,7 @@ mark { background: #ffe1d2; color: inherit; padding: 0 2px; border-radius: 3px; 
   .header-inner { padding-block: 10px 6px; gap: 6px; }
   .brand img { width: 240px; }
   .audience { grid-template-columns: 1fr; }
-  .top-nav { width: 100%; justify-content: space-between; flex-wrap: nowrap; gap: 2px; }
+  .top-nav { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 2px; }
   .top-nav a { padding: 6px 8px; font-size: .95rem; }
   .btn-outline { display: none; }
   .toc { top: 0; }
@@ -384,3 +384,21 @@ body.ed-drawer-open { overflow: hidden; }
 .ed-report p { margin: 0 0 10px; }
 .ed-report .field-row { max-width: 420px; }
 .ed-report .btn-outline { background: #fff; color: var(--navy); font: inherit; font-weight: 600; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+
+/* faculty directory */
+.fac-leaders { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.fac-leader { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--orange); border-radius: var(--radius); padding: 10px 14px; overflow-wrap: anywhere; }
+.fac-role { font-size: .78rem; font-weight: 700; color: var(--orange-dark); }
+.fac-top { display: flex; gap: 12px; align-items: flex-start; }
+.fac-top > div { min-width: 0; }
+.fac-photo { flex: none; width: 72px; height: 72px; border-radius: 10px; object-fit: cover; object-position: top; background: var(--bg); }
+.fac-initials { display: flex; align-items: center; justify-content: center; background: var(--navy); color: #fff; font-weight: 700; font-size: 1.3rem; }
+.fac-title { font-size: .85rem; color: var(--muted); line-height: 1.35; }
+.fac-contact { font-size: .9rem; overflow-wrap: anywhere; }
+.fac-links { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .9rem; margin-top: auto; padding-top: 2px; }
+.fac-areas { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; margin-top: 22px; }
+.fac-areas summary { font-weight: 600; color: var(--navy); cursor: pointer; }
+.fac-areas ul { margin: 10px 0 4px; padding-left: 1.2em; }
+.fac-areas li { margin: 4px 0; }
+#fac-source { margin-top: 12px; }
+#fac-results .group-title:first-child { margin-top: 12px; }

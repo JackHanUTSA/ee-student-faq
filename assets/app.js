@@ -85,15 +85,17 @@
   }
 
   // ---------- views & routing ----------
-  const views = ["faq", "search", "forms", "contacts", "ask", "editor"];
+  const views = ["faq", "search", "forms", "faculty", "contacts", "ask", "editor"];
   function show(view) {
     views.forEach((v) => ($("#view-" + v).hidden = v !== view));
+    $("#notice").hidden = view === "faculty";   // the deadlines notice has nothing to do with the directory
     $$(".top-nav [data-nav]").forEach((a) => { if (a.dataset.nav === view) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   }
 
   function route() {
     const h = decodeURIComponent(location.hash.slice(1));
     if (h === "forms") { show("forms"); renderForms(); return; }
+    if (h === "faculty" && FACULTY) { show("faculty"); renderFaculty(); return; }
     if (h === "contacts") { show("contacts"); return; }
     if (h === "ask") { show("ask"); onAskShown(); return; }
     if (h === "editor" || h === "signin" || h === "login") { show("editor"); if (window.EEEditor) window.EEEditor.onShow(); window.scrollTo({ top: 0 }); return; }
@@ -175,25 +177,30 @@
     const formHits = FORMS.files.concat(FORMS.external).filter((f) =>
       terms.every((t) => norm((f.title || f.label) + " " + (f.who || "")).includes(t))).slice(0, 6);
 
+    const facHits = allFacultyMatching(terms).slice(0, 6);
+
     show("search");
     $("#result-count").textContent = scored.length
       ? `${scored.length} question${scored.length === 1 ? "" : "s"} match “${raw}”`
-      : `No questions match “${raw}”.`;
+      : facHits.length ? `${facHits.length} faculty match “${raw}”` : `No questions match “${raw}”.`;
     let out = "";
     if (formHits.length) {
       out += `<h3 class="result-group">Forms</h3><div class="card-grid">${formHits.map(formCard).join("")}</div>`;
     }
     if (scored.length) {
       out += `<h3 class="result-group">Questions</h3>` + scored.map((r, i) => questionHTML(r.x.q, r.x.p, true).replace('<details class="qa"', `<details class="qa"${i < 3 ? " open" : ""}`).replace(`id="${r.x.q.id}"`, `id="r-${r.x.q.id}" data-qid="${r.x.q.id}"`)).join("");
-    } else {
+    } else if (!facHits.length) {
       out += `<div class="empty"><p>Try a shorter word, or browse the <a href="#graduate">graduate</a> or <a href="#undergraduate">undergraduate</a> questions.</p><p>We may not have answered this one yet. Use <strong>Ask the coordinator</strong> below and we'll reply by email.</p></div>`;
+    }
+    if (facHits.length) {
+      out += `<h3 class="result-group">Faculty</h3><div class="card-grid">${facHits.map(personCard).join("")}</div>`;
     }
     $("#results").innerHTML = out;
     highlight($("#results"), terms);
-    $("#search-ask").classList.toggle("is-strong", scored.length === 0);
+    $("#search-ask").classList.toggle("is-strong", scored.length + facHits.length === 0);
     lastSearch = raw;
     clearTimeout(trackTimer);
-    trackTimer = setTimeout(() => track.search(raw, scored.length), 1500);
+    trackTimer = setTimeout(() => track.search(raw, scored.length + facHits.length), 1500);
   }
   let lastSearch = "", trackTimer;
   input.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 120); });
@@ -241,6 +248,83 @@
     if (wellness) {
       $("#wellness").innerHTML = `<h3 class="group-title">${esc(wellness.title.replace(/\s*\(all students\)/i, ""))}</h3>` + wellness.blocks.map(blockHTML).join("");
     }
+  }
+
+  // ---------- faculty view ----------
+  const FACULTY = window.FACULTY;
+  if (!FACULTY) { const link = $('[data-nav="faculty"]'); if (link) link.remove(); }
+  const FAC_GROUPS = FACULTY ? [{ id: "core", title: "Faculty", people: FACULTY.faculty }].concat(FACULTY.groups) : [];
+  const personText = (p) => [p.name, p.title || "", (p.titles || []).join(" "), p.office || "", p.email || "", p.degree || "", (p.research || []).join(" ")].join(" ");
+  const personMatches = (p, terms) => terms.every((t) => norm(personText(p)).includes(t));
+  const allFacultyMatching = (terms) => FAC_GROUPS.flatMap((g) => g.people).filter((p) => personMatches(p, terms));
+
+  function initials(name) {
+    const words = name.split(",")[0].replace(/\(.*?\)/g, " ").trim().split(/\s+/);
+    return (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : "")).toUpperCase();
+  }
+  const externalLink = (url, label) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`;
+
+  function personCard(p) {
+    if (p.titles === undefined) {   // courtesy, adjunct, and industrial lists give only a name and title
+      return `<article class="card fac-mini"><h4>${p.url ? externalLink(p.url, p.name) : esc(p.name)}</h4>
+        ${p.title ? `<div class="meta">${esc(p.title)}</div>` : ""}</article>`;
+    }
+    const links = (p.profile ? [externalLink(p.profile, "UTSA profile")] : []).concat(p.links.map((l) => externalLink(l.url, l.label)));
+    const place = [p.office, p.phone && `<a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>`].filter(Boolean);
+    return `<article class="card fac-card">
+      <div class="fac-top">
+        ${p.photo ? `<img class="fac-photo" src="${esc(p.photo)}" alt="" width="72" height="72" loading="lazy" data-initials="${esc(initials(p.name))}">`
+                  : `<span class="fac-photo fac-initials" aria-hidden="true">${esc(initials(p.name))}</span>`}
+        <div><h4>${esc(p.name)}</h4>${p.titles.map((t) => `<div class="fac-title">${esc(t)}</div>`).join("")}</div>
+      </div>
+      <div class="fac-contact">
+        ${p.email ? `<div><a href="mailto:${esc(p.email)}">${esc(p.email)}</a></div>` : ""}
+        ${place.length ? `<div>${place.join(" · ")}</div>` : ""}
+      </div>
+      ${p.degree ? `<div class="meta">${esc(p.degree)}</div>` : ""}
+      ${p.research.length ? `<div class="meta"><strong>Research:</strong> ${p.research.map(esc).join("; ")}</div>` : ""}
+      ${links.length ? `<div class="fac-links">${links.join("")}</div>` : ""}
+    </article>`;
+  }
+
+  // a photo that fails to load falls back to the person's initials
+  document.addEventListener("error", (e) => {
+    const img = e.target;
+    if (!img.classList || !img.classList.contains("fac-photo")) return;
+    const s = document.createElement("span");
+    s.className = "fac-photo fac-initials"; s.setAttribute("aria-hidden", "true"); s.textContent = img.dataset.initials;
+    img.replaceWith(s);
+  }, true);
+
+  let facGroup = "all", facBuilt = false;
+  function renderFaculty() {
+    if (!facBuilt) {
+      facBuilt = true;
+      $("#fac-leaders").innerHTML = FACULTY.leadership.length ? `<h3 class="group-title">Department leadership</h3><div class="fac-leaders">${
+        FACULTY.leadership.map((l) => `<div class="fac-leader"><div class="fac-role">${esc(l.role)}</div><div>${esc(l.name)}</div>
+          ${l.email ? `<div class="small"><a href="mailto:${esc(l.email)}">${esc(l.email)}</a></div>` : ""}</div>`).join("")}</div>` : "";
+      const chip = (id, label) => `<button type="button" class="chip${id === facGroup ? " is-on" : ""}" data-fac-group="${id}">${esc(label)}</button>`;
+      $("#fac-chips").innerHTML = chip("all", "All") + FAC_GROUPS.map((g) => chip(g.id, g.id === "core" ? "Faculty" : g.title.replace(/ faculty$| appointments$/i, ""))).join("");
+      $$("[data-fac-group]").forEach((b) => b.addEventListener("click", () => {
+        facGroup = b.dataset.facGroup;
+        $$("[data-fac-group]").forEach((x) => x.classList.toggle("is-on", x === b));
+        renderFaculty();
+      }));
+      $("#fac-filter").addEventListener("input", renderFaculty);
+      $("#fac-areas-list").innerHTML = FACULTY.researchAreas.map((a) => `<li>${esc(a)}</li>`).join("");
+      $(".fac-areas").hidden = !FACULTY.researchAreas.length;
+      $("#fac-source").innerHTML = `From UTSA's public <a href="${esc(FACULTY.source)}" target="_blank" rel="noopener">faculty directory</a>
+        and <a href="${esc(FACULTY.researchSource)}" target="_blank" rel="noopener">research page</a>, checked ${esc(FACULTY.checked)}.`;
+    }
+    const terms = norm($("#fac-filter").value.trim()).split(/\s+/).filter(Boolean);
+    const shown = FAC_GROUPS.filter((g) => facGroup === "all" || g.id === facGroup)
+      .map((g) => ({ g, people: g.people.filter((p) => personMatches(p, terms)) }))
+      .filter((x) => x.people.length);
+    const total = shown.reduce((n, x) => n + x.people.length, 0);
+    $("#fac-count").textContent = `Showing ${total} ${total === 1 ? "person" : "people"}`;
+    $("#fac-results").innerHTML = shown.map((x) =>
+      `<h3 class="group-title">${esc(x.g.title)} <span class="muted">${x.people.length}</span></h3><div class="card-grid">${x.people.map(personCard).join("")}</div>`).join("")
+      || `<p class="muted">No faculty match that filter.</p>`;
   }
 
   // ---------- misc interactions ----------
